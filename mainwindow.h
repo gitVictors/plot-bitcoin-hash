@@ -25,17 +25,27 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_loadFileButton_clicked();
-    void on_clearButton_clicked();
+    void on_loadFileButton_clicked_1();
+    void on_clearButton_clicked_1();
+    void on_loadFileButton_clicked_2();
+    void on_clearButton_clicked_2();
+    void on_loadFileButton_clicked_3();
+    void on_clearButton_clicked_3();
 
 private:
     Ui::MainWindow *ui;
-    void loadAutocorrelationData(const QStringList &filenames);
-    void createChart(const QVector<QVector<QPointF>> &allData, const QStringList &filenames);
+    void loadAutocorrelationData(const QStringList &filenames,  QChart *chart);
+    void createChart(const QVector<QVector<QPointF>> &allData, const QStringList &filenames,  QChart *chart );
     QColor getColorForIndex(int index);
 
-    QChart *chart;
-    QChartView *chartView;
+    QChart *chart_1;
+    QChartView *chartView_1;
+    QChart *chart_2;
+    QChartView *chartView_2;
+    QChart *chart_3;
+    QChartView *chartView_3;
+
+
     QVector<QColor> colors;
 };
 

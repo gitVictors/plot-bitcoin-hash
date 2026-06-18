@@ -16,8 +16,12 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
-    , chart(nullptr)
-    , chartView(nullptr)
+    , chart_1(nullptr)
+    , chartView_1(nullptr)
+    , chart_2(nullptr)
+    , chartView_2(nullptr)
+    , chart_3(nullptr)
+    , chartView_3(nullptr)
 {
     ui->setupUi(this);
 
@@ -37,41 +41,117 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Создаем контейнер для графика
     QWidget *chartContainer = new QWidget(this);
-    QVBoxLayout *layout = new QVBoxLayout(chartContainer);
+    QVBoxLayout *mainLayout = new QVBoxLayout(chartContainer);
 
-    // Создаем кнопки
-    QPushButton *loadButton = new QPushButton("Загрузить файлы (1-10)", this);
+    // Создаем кнопки первой строки ------------------------------------------------------
+    QPushButton *loadButton = new QPushButton("Загрузить файлы для графика 1", this);
     QPushButton *clearButton = new QPushButton("Очистить график", this);
 
-    connect(loadButton, &QPushButton::clicked, this, &MainWindow::on_loadFileButton_clicked);
-    connect(clearButton, &QPushButton::clicked, this, &MainWindow::on_clearButton_clicked);
+    connect(loadButton, &QPushButton::clicked, this, &MainWindow::on_loadFileButton_clicked_1);
+    connect(clearButton, &QPushButton::clicked, this, &MainWindow::on_clearButton_clicked_1);
 
-    QHBoxLayout *buttonLayout = new QHBoxLayout();
-    buttonLayout->addWidget(loadButton);
-    buttonLayout->addWidget(clearButton);
+    // Создаем горизонтальный макет для первой строки кнопок
+    QHBoxLayout *buttonLayout1 = new QHBoxLayout();
+    buttonLayout1->addWidget(loadButton);
+    buttonLayout1->addWidget(clearButton);
+    buttonLayout1->addStretch(); // Добавляем растяжение для выравнивания влево
 
-    layout->addLayout(buttonLayout);
+    // Создаем кнопки второй строки-----------------------------------------------------------
+    QPushButton *loadButton2 = new QPushButton("Загрузить файлы для графика 2", this);
+    QPushButton *clearButton2 = new QPushButton("Очистить график", this);
 
-    // Создаем начальный пустой график
-    chart = new QChart();
-    chart->setTitle("Автокорреляция данных");
-    chart->setAnimationOptions(QChart::SeriesAnimations);
+    connect(loadButton2, &QPushButton::clicked, this, &MainWindow::on_loadFileButton_clicked_2);
+    connect(clearButton2, &QPushButton::clicked, this, &MainWindow::on_clearButton_clicked_2);
 
-    chartView = new QChartView(chart);
-    chartView->setRenderHint(QPainter::Antialiasing);
-    layout->addWidget(chartView);
+    // Создаем горизонтальный макет для второй строки кнопок
+    QHBoxLayout *buttonLayout2 = new QHBoxLayout();
+    buttonLayout2->addWidget(loadButton2);
+    buttonLayout2->addWidget(clearButton2);
+    buttonLayout2->addStretch(); // Добавляем растяжение для выравнивания влево
+
+    // Создаем кнопки третьей строки-----------------------------------------------------------
+    QPushButton *loadButton3 = new QPushButton("Загрузить файлы для графика 3", this);
+    QPushButton *clearButton3 = new QPushButton("Очистить график", this);
+
+    connect(loadButton3, &QPushButton::clicked, this, &MainWindow::on_loadFileButton_clicked_3);
+    connect(clearButton3, &QPushButton::clicked, this, &MainWindow::on_clearButton_clicked_3);
+
+    // Создаем горизонтальный макет для второй строки кнопок
+    QHBoxLayout *buttonLayout3 = new QHBoxLayout();
+    buttonLayout3->addWidget(loadButton3);
+    buttonLayout3->addWidget(clearButton3);
+    buttonLayout3->addStretch(); // Добавляем растяжение для выравнивания влево
+
+    // Добавляем оба макета в главный вертикальный макет---*****
+    mainLayout->addLayout(buttonLayout1);
+    mainLayout->addLayout(buttonLayout2);
+    mainLayout->addLayout(buttonLayout3);
+    //-----------------------------------------------------------
+
+    // Создаем начальный пустой график 1 --------------------------------------------
+    chart_1 = new QChart();
+    chart_1->setTitle("Автокорреляция данных");
+    chart_1->setAnimationOptions(QChart::SeriesAnimations);
+
+    chartView_1 = new QChartView(chart_1);
+    chartView_1->setRenderHint(QPainter::Antialiasing);
+    mainLayout->addWidget(chartView_1);
+
+    setCentralWidget(chartContainer);
+
+
+    // Устанавливаем начальные оси
+    QValueAxis *axisX_1 = new QValueAxis();
+    QValueAxis *axisY_1 = new QValueAxis();
+    axisX_1->setTitleText("Lag");
+    axisY_1->setTitleText("Автокорреляция");
+    axisY_1->setRange(-1.0, 1.0);
+
+    chart_1->addAxis(axisX_1, Qt::AlignBottom);
+    chart_1->addAxis(axisY_1, Qt::AlignLeft);
+
+    // Создаем начальный пустой график 2 -----------------------------------------------
+    chart_2 = new QChart();
+    chart_2->setTitle("Автокорреляция данных");
+    chart_2->setAnimationOptions(QChart::SeriesAnimations);
+
+    chartView_2 = new QChartView(chart_2);
+    chartView_2->setRenderHint(QPainter::Antialiasing);
+    mainLayout->addWidget(chartView_2);
 
     setCentralWidget(chartContainer);
 
     // Устанавливаем начальные оси
-    QValueAxis *axisX = new QValueAxis();
-    QValueAxis *axisY = new QValueAxis();
-    axisX->setTitleText("Lag");
-    axisY->setTitleText("Автокорреляция");
-    axisY->setRange(-1.0, 1.0);
+    QValueAxis *axisX_2 = new QValueAxis();
+    QValueAxis *axisY_2 = new QValueAxis();
+    axisX_2->setTitleText("Lag");
+    axisY_2->setTitleText("Автокорреляция");
+    axisY_2->setRange(-1.0, 1.0);
 
-    chart->addAxis(axisX, Qt::AlignBottom);
-    chart->addAxis(axisY, Qt::AlignLeft);
+    chart_2->addAxis(axisX_2, Qt::AlignBottom);
+    chart_2->addAxis(axisY_2, Qt::AlignLeft);
+
+    // Создаем начальный пустой график 2 -----------------------------------------------
+    chart_3 = new QChart();
+    chart_3->setTitle("Автокорреляция данных");
+    chart_3->setAnimationOptions(QChart::SeriesAnimations);
+
+    chartView_3 = new QChartView(chart_3);
+    chartView_3->setRenderHint(QPainter::Antialiasing);
+    mainLayout->addWidget(chartView_3);
+
+    setCentralWidget(chartContainer);
+
+    // Устанавливаем начальные оси
+    QValueAxis *axisX_3 = new QValueAxis();
+    QValueAxis *axisY_3 = new QValueAxis();
+    axisX_3->setTitleText("Lag");
+    axisY_3->setTitleText("Автокорреляция");
+    axisY_3->setRange(-1.0, 1.0);
+
+    chart_3->addAxis(axisX_3, Qt::AlignBottom);
+    chart_3->addAxis(axisY_3, Qt::AlignLeft);
+
 }
 
 MainWindow::~MainWindow()
@@ -84,10 +164,11 @@ QColor MainWindow::getColorForIndex(int index)
     return colors[index % colors.size()];
 }
 
-void MainWindow::on_loadFileButton_clicked()
+//======== Load file button ===============================================
+void MainWindow::on_loadFileButton_clicked_1()
 {
     QStringList filenames = QFileDialog::getOpenFileNames(this,
-                                                          "Выберите файлы с данными автокорреляции (1-10)",
+                                                          "Выберите файлы с данными автокорреляции. График 1.",
                                                           "",
                                                           "Текстовые файлы (*.txt);;Все файлы (*)");
 
@@ -101,13 +182,91 @@ void MainWindow::on_loadFileButton_clicked()
         filenames = filenames.mid(0, 10);
     }
 
-    loadAutocorrelationData(filenames);
+    loadAutocorrelationData(filenames, chart_1);
 }
 
-void MainWindow::on_clearButton_clicked()
+void MainWindow::on_loadFileButton_clicked_2()
+{
+    QStringList filenames = QFileDialog::getOpenFileNames(this,
+                                                          "Выберите файлы с данными автокорреляции. График 2.",
+                                                          "",
+                                                          "Текстовые файлы (*.txt);;Все файлы (*)");
+
+    if (filenames.isEmpty()) {
+        return;
+    }
+
+    if (filenames.size() > 10) {
+        QMessageBox::warning(this, "Предупреждение",
+                             "Выбрано более 10 файлов. Будет загружено только первые 10.");
+        filenames = filenames.mid(0, 10);
+    }
+
+    loadAutocorrelationData(filenames, chart_2);
+}
+
+
+void MainWindow::on_loadFileButton_clicked_3()
+{
+    QStringList filenames = QFileDialog::getOpenFileNames(this,
+                                                          "Выберите файлы с данными автокорреляции. График 3.",
+                                                          "",
+                                                          "Текстовые файлы (*.txt);;Все файлы (*)");
+
+    if (filenames.isEmpty()) {
+        return;
+    }
+
+    if (filenames.size() > 10) {
+        QMessageBox::warning(this, "Предупреждение",
+                             "Выбрано более 10 файлов. Будет загружено только первые 10.");
+        filenames = filenames.mid(0, 10);
+    }
+
+    loadAutocorrelationData(filenames, chart_3);
+}
+
+//====================================================================================
+
+//==========Clear button==============================================================
+void MainWindow::on_clearButton_clicked_1()
 {
     // Очищаем график
-    chart->removeAllSeries();
+    chart_1->removeAllSeries();
+
+    // Удаляем все существующие оси
+    QList<QAbstractAxis*> axes = chart_1->axes();
+    for (int i = 0; i< axes.size(); ++i){
+        QAbstractAxis *ax = axes.at(i);
+        chart_1->removeAxis(ax);
+        delete ax;
+    }
+    // Создаем новые оси
+    QValueAxis *axisX = new QValueAxis();
+    QValueAxis *axisY = new QValueAxis();
+    axisX->setTitleText("Lag");
+    axisY->setTitleText("Автокорреляция");
+    axisY->setRange(-1.0, 1.0);
+
+    chart_1->addAxis(axisX, Qt::AlignBottom);
+    chart_1->addAxis(axisY, Qt::AlignLeft);
+
+    chart_1->setTitle("Автокорреляция данных");
+
+}
+
+void MainWindow::on_clearButton_clicked_2()
+{
+    // Очищаем график
+    chart_2->removeAllSeries();
+
+    // Удаляем все существующие оси
+    QList<QAbstractAxis*> axes = chart_2->axes();
+    for (int i = 0; i< axes.size(); ++i){
+        QAbstractAxis *ax = axes.at(i);
+        chart_2->removeAxis(ax);
+        delete ax;
+    }
 
     // Создаем новые оси
     QValueAxis *axisX = new QValueAxis();
@@ -116,13 +275,44 @@ void MainWindow::on_clearButton_clicked()
     axisY->setTitleText("Автокорреляция");
     axisY->setRange(-1.0, 1.0);
 
-    chart->addAxis(axisX, Qt::AlignBottom);
-    chart->addAxis(axisY, Qt::AlignLeft);
+    chart_2->addAxis(axisX, Qt::AlignBottom);
+    chart_2->addAxis(axisY, Qt::AlignLeft);
 
-    chart->setTitle("Автокорреляция данных");
+    chart_2->setTitle("Автокорреляция данных");
+
 }
 
-void MainWindow::loadAutocorrelationData(const QStringList &filenames)
+void MainWindow::on_clearButton_clicked_3()
+{
+    // Очищаем график
+    chart_3->removeAllSeries();
+
+    // Удаляем все существующие оси
+    QList<QAbstractAxis*> axes = chart_3->axes();
+    for (int i = 0; i< axes.size(); ++i){
+        QAbstractAxis *ax = axes.at(i);
+        chart_3->removeAxis(ax);
+        delete ax;
+    }
+
+    // Создаем новые оси
+    QValueAxis *axisX = new QValueAxis();
+    QValueAxis *axisY = new QValueAxis();
+    axisX->setTitleText("Lag");
+    axisY->setTitleText("Автокорреляция");
+    axisY->setRange(-1.0, 1.0);
+
+    chart_3->addAxis(axisX, Qt::AlignBottom);
+    chart_3->addAxis(axisY, Qt::AlignLeft);
+
+    chart_3->setTitle("Автокорреляция данных");
+
+}
+
+//============================================================================================
+
+
+void MainWindow::loadAutocorrelationData(const QStringList &filenames,   QChart *chart )
 {
     QVector<QVector<QPointF>> allData;
     QStringList loadedFiles;
@@ -182,12 +372,10 @@ void MainWindow::loadAutocorrelationData(const QStringList &filenames)
         return;
     }
 
-    createChart(allData, loadedFiles);
+    createChart(allData, loadedFiles, chart);
 
     QString message = QString("Загружено %1 наборов данных:").arg(allData.size());
-    // for (const QString &file : loadedFiles) {
-    //     message += "\n- " + file;
-    // }
+
     // Используем итератор для QStringList
     for (int i = 0; i < loadedFiles.size(); ++i) {
         message += "\n- " + loadedFiles.at(i);
@@ -195,10 +383,20 @@ void MainWindow::loadAutocorrelationData(const QStringList &filenames)
     QMessageBox::information(this, "Успех", message);
 }
 
-void MainWindow::createChart(const QVector<QVector<QPointF>> &allData, const QStringList &filenames)
+void MainWindow::createChart(const QVector<QVector<QPointF>> &allData, const QStringList &filenames,  QChart *chart)
 {
+
     // Очищаем старый график
     chart->removeAllSeries();
+
+    // Удаляем все существующие оси
+    QList<QAbstractAxis*> axes = chart->axes();
+    for (int i = 0; i< axes.size(); ++i){
+        QAbstractAxis *ax = axes.at(i);
+        chart->removeAxis(ax);
+        delete ax;
+    }
+
 
     // Находим глобальные минимум и максимум по X
     double globalMinX = std::numeric_limits<double>::max();
